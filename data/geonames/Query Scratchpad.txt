@@ -1,0 +1,170 @@
+-- Simple Aggregation
+
+POST cities15000/city/_search?search_type=count
+{
+   "aggs": {
+      "dataset_sources": {
+         "terms": {
+            "field": "country_code"
+         }
+      }
+   }
+}
+
+
+-- Geo distance filter within 25km of WCB
+
+POST cities15000/city/_search
+{
+   "query": {
+      "bool": {
+         "must": {
+            "match_all": {}
+         },
+         "filter": {
+            "geo_distance": {
+               "distance": "25km",
+               "location": {
+                  "lat": 50.719151,
+                  "lon": 7.124129
+               }
+            }
+         }
+      }
+   }
+}
+
+
+-- Geo distance filter within 25km of WCB nearest first
+
+POST cities15000/city/_search
+{
+   "query": {
+      "bool": {
+         "must": {
+            "match_all": {}
+         },
+         "filter": {
+            "geo_distance": {
+               "distance": "25km",
+               "location": {
+                  "lat": 50.719151,
+                  "lon": 7.124129
+               }
+            }
+         }
+      }
+   },
+   "sort": [
+      {
+         "_geo_distance": {
+            "location": {
+               "lat": 50.719151,
+               "lon": 7.124129
+            },
+            "order": "asc",
+            "unit": "km",
+            "distance_type": "plane"
+         }
+      }
+   ]
+}
+
+
+-- Geo bounding box
+
+POST cities15000/city/_search
+{
+  "query": {
+    "filtered": {
+      "filter": {
+        "geo_bounding_box": {
+          "location": { 
+            "top_left": {
+              "lat":  50.8,
+              "lon":  7.0
+            },
+            "bottom_right": {
+              "lat":  50.7,
+              "lon": 7.4
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+
+-- Geo bounding box with lan_lon optimisation
+
+POST cities15000/city/_search
+{
+   "query": {
+      "filtered": {
+         "filter": {
+            "geo_bounding_box": {
+               "type": "indexed",
+               "location": {
+                  "top_left": {
+                     "lat": 50.8,
+                     "lon": 7
+                  },
+                  "bottom_right": {
+                     "lat": 50.7,
+                     "lon": 7.4
+                  }
+               }
+            }
+         }
+      }
+   }
+}
+
+
+-- Geo Polygon query
+
+POST cities15000/city/_search
+{
+   "filter": {
+      "geo_polygon": {
+         "location": {
+            "points": [
+               {
+                  "lat": 50,
+                  "lon": 7
+               },
+               {
+                  "lat": 51,
+                  "lon": 8
+               },
+               {
+                  "lat": 49,
+                  "lon": 8
+               }
+            ]
+         }
+      }
+   }
+}
+
+
+-- Geo Bounds Aggregation: find a bounding box that will encompass all results
+
+POST cities15000/city/_search
+{
+   "size": 0,
+   "query": {
+      "match_all": {}
+   },
+   "aggs": {
+      "map_zoom": {
+         "geo_bounds": {
+            "field": "location"
+         }
+      }
+   }
+}
+
+
+

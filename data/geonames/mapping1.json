@@ -1,0 +1,71 @@
+{
+	"city": {
+		"_all": {
+			"enabled": false
+		},
+		"properties": {
+			"name": {
+				"type": "string"
+			},
+			"asciiname": {
+				"type": "string"
+			},
+			"alternatenames": {
+				"type": "string"
+			},
+			"feature_class": {
+				"type": "string",
+				"index": "not_analyzed"
+			},
+			"feature_code": {
+				"type": "string",
+				"index": "not_analyzed"
+			},
+			"country_code": {
+				"type": "string",
+				"index": "not_analyzed"
+			},
+			"cc2": {
+				"type": "string",
+				"index": "not_analyzed"
+			},
+			"admin1_code": {
+				"type": "string",
+				"index": "not_analyzed"
+			},
+			"admin2_code": {
+				"type": "string",
+				"index": "not_analyzed"
+			},
+			"admin3_code": {
+				"type": "string",
+				"index": "not_analyzed"
+			},
+			"admin4_code": {
+				"type": "string",
+				"index": "not_analyzed"
+			},
+			"population": {
+				"type": "long"
+			},
+			"dem": {
+				"type": "integer"
+			},
+			"elevation": {
+				"type": "integer"
+			},
+			"timezone": {
+				"type": "string",
+				"index": "not_analyzed"
+			},
+			"modification_date": {
+				"type": "date",
+				"format": "yyyy-MM-dd"
+			},
+			"location": {
+				"type": "geo_point",
+				"lat_lon": true
+			}
+		}
+	}
+}
