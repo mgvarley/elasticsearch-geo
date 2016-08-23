@@ -1,0 +1,83 @@
+-- 1) Create some data
+curl -XPOST 'http://localhost:9200/movies/movie' -d '{ "title" : "Star Wars: Episode IV - A New Hope", "released": 1977 }'
+curl -XPOST 'http://localhost:9200/movies/movie' -d '{ "title" : "Star Wars: Episode V - The Empire Strikes Back", "released": 1980 }'
+curl -XPOST 'http://localhost:9200/movies/movie' -d '{ "title" : "Star Wars: Episode VI - Return of the Jedi", "released": 1983 }'
+
+
+-- 2) Perform a simple search
+curl 'http://localhost:9200/movies/movie/_search?q=title:jedi&pretty=true'
+
+
+-- 3) Perform a slightly more complex search in Sense
+
+POST movies/movie/_search
+{
+   "query": {
+      "match": {
+         "title": "star"
+      }
+   }
+}
+
+
+-- 4) Perform a range query on released year
+
+POST movies/movie/_search
+{
+   "filter": {
+      "range": {
+         "released": {
+            "from": 1980
+         }
+      }
+   }
+}
+
+
+-- 5) A filtered query
+
+POST movies/movie/_search
+{
+   "query": {
+      "filtered": {
+         "query": {
+            "match": {
+               "title": "star"
+            }
+         },
+         "filter": {
+            "range": {
+               "released": {
+                  "from": 1980
+               }
+            }
+         }
+      }
+   }
+}
+
+
+-- 6) A combined query
+
+POST movies/movie/_search
+{
+   "query": {
+      "bool": {
+         "must": [
+            {
+               "match": {
+                  "title": "star"
+               }
+            }
+         ],
+         "should": [
+            {
+               "match": {
+                  "title": "star"
+               }
+            }
+         ]
+      }
+   }
+}
+
