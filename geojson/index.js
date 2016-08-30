@@ -1,4 +1,4 @@
-// Import the official elastisearch library
+// Import the official elastiscearch library
 var elasticsearch = require('elasticsearch');
 
 // Setup the client
